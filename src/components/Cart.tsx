@@ -98,8 +98,12 @@ const CartContent = ({ items, total, onUpdateQuantity, onRemoveItem, onCheckout 
                   </span>
                   <div className="flex items-center space-x-2">
                     <button
-                      onClick={() => onUpdateQuantity(item.id, Math.max(0, item.quantity - 1))}
+                      onClick={() => {
+                        const newQuantity = Math.max(0, item.quantity - 1);
+                        onUpdateQuantity(item.id, newQuantity);
+                      }}
                       className="w-6 h-6 bg-dark-600 hover:bg-dark-500 rounded text-gray-300 flex items-center justify-center"
+                      disabled={item.quantity <= 1}
                     >
                       -
                     </button>
@@ -107,8 +111,12 @@ const CartContent = ({ items, total, onUpdateQuantity, onRemoveItem, onCheckout 
                       {item.quantity}
                     </span>
                     <button
-                      onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
+                      onClick={() => {
+                        const newQuantity = Math.min(20, item.quantity + 1);
+                        onUpdateQuantity(item.id, newQuantity);
+                      }}
                       className="w-6 h-6 bg-dark-600 hover:bg-dark-500 rounded text-gray-300 flex items-center justify-center"
+                      disabled={item.quantity >= 20}
                     >
                       +
                     </button>

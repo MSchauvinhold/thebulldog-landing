@@ -5,13 +5,25 @@ export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      const offset = sectionId === 'guias' ? 250 : 120;
-      window.scrollTo({
-        top: element.offsetTop - offset,
-        behavior: 'smooth'
-      });
+    try {
+      // Validar que sectionId sea seguro
+      const validSections = ['inicio', 'guias', 'productos', 'contacto'];
+      if (!validSections.includes(sectionId)) {
+        console.warn('Invalid section ID:', sectionId);
+        return;
+      }
+      
+      const element = document.getElementById(sectionId);
+      if (element && element.offsetTop !== undefined) {
+        const offset = sectionId === 'guias' ? 250 : 120;
+        window.scrollTo({
+          top: element.offsetTop - offset,
+          behavior: 'smooth'
+        });
+        setIsMenuOpen(false);
+      }
+    } catch (error) {
+      console.error('Error scrolling to section:', error);
       setIsMenuOpen(false);
     }
   };

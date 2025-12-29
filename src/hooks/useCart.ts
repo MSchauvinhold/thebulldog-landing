@@ -14,9 +14,10 @@ const cartReducer = (state: CartItem[], action: CartAction): CartItem[] => {
     case 'ADD_ITEM': {
       const existingItem = state.find(item => item.id === action.payload.id);
       if (existingItem) {
+        const newQuantity = Math.min(20, existingItem.quantity + 1);
         return state.map(item =>
           item.id === action.payload.id
-            ? { ...item, quantity: item.quantity + 1 }
+            ? { ...item, quantity: newQuantity }
             : item
         );
       }
@@ -24,12 +25,13 @@ const cartReducer = (state: CartItem[], action: CartAction): CartItem[] => {
     }
     
     case 'UPDATE_QUANTITY': {
-      if (action.payload.quantity <= 0) {
+      const validQuantity = Math.max(0, Math.min(20, Math.floor(Math.abs(action.payload.quantity))));
+      if (validQuantity <= 0) {
         return state.filter(item => item.id !== action.payload.id);
       }
       return state.map(item =>
         item.id === action.payload.id
-          ? { ...item, quantity: action.payload.quantity }
+          ? { ...item, quantity: validQuantity }
           : item
       );
     }
@@ -40,8 +42,19 @@ const cartReducer = (state: CartItem[], action: CartAction): CartItem[] => {
     case 'CLEAR_CART':
       return [];
     
-    case 'LOAD_CART':
-      return action.payload;
+    case 'LOAD_CART': {
+      // Validar datos del localStorage
+      if (!Array.isArray(action.payload)) return [];
+      return action.payload.filter(item => 
+        item && 
+        typeof item.id === 'number' && 
+        typeof item.name === 'string' && 
+        typeof item.price === 'number' && 
+        typeof item.quantity === 'number' &&
+        item.quantity > 0 && 
+        item.quantity <= 20
+      );
+    }
     
     default:
       return state;
@@ -57,16 +70,23 @@ export const useCart = () => {
     if (savedCart) {
       try {
         const parsedCart = JSON.parse(savedCart);
-        dispatch({ type: 'LOAD_CART', payload: parsedCart });
+        if (Array.isArray(parsedCart)) {
+          dispatch({ type: 'LOAD_CART', payload: parsedCart });
+        }
       } catch (error) {
         console.error('Error loading cart from localStorage:', error);
+        localStorage.removeItem('bulldog-cart');
       }
     }
   }, []);
 
   // Guardar carrito en localStorage cuando cambie
   useEffect(() => {
-    localStorage.setItem('bulldog-cart', JSON.stringify(items));
+    try {
+      localStorage.setItem('bulldog-cart', JSON.stringify(items));
+    } catch (error) {
+      console.error('Error saving cart to localStorage:', error);
+    }
   }, [items]);
 
   const addItem = (product: Product) => {

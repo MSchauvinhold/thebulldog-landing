@@ -6,6 +6,19 @@ interface ProductCardProps {
 }
 
 export const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
+  const handleAddToCart = () => {
+    try {
+      // Validar que el producto tenga datos válidos
+      if (!product || !product.id || !product.name || !product.price || product.price < 0) {
+        console.error('Invalid product data:', product);
+        return;
+      }
+      onAddToCart(product);
+    } catch (error) {
+      console.error('Error adding product to cart:', error);
+    }
+  };
+
   return (
     <div className="card p-6">
       <div className="aspect-square mb-4 bg-dark-700 rounded-lg overflow-hidden">
@@ -33,7 +46,7 @@ export const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
         </span>
         
         <button 
-          onClick={() => onAddToCart(product)}
+          onClick={handleAddToCart}
           className="btn-primary text-sm px-4 py-2"
         >
           Agregar al carrito

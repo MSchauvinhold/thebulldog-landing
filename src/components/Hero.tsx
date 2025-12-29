@@ -1,11 +1,15 @@
 export const Hero = () => {
   const scrollToProducts = () => {
-    const element = document.getElementById('productos');
-    if (element) {
-      window.scrollTo({
-        top: element.offsetTop - 120,
-        behavior: 'smooth'
-      });
+    try {
+      const element = document.getElementById('productos');
+      if (element && element.offsetTop !== undefined) {
+        window.scrollTo({
+          top: element.offsetTop - 120,
+          behavior: 'smooth'
+        });
+      }
+    } catch (error) {
+      console.error('Error scrolling to products:', error);
     }
   };
 
