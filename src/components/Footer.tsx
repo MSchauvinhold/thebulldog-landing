@@ -1,6 +1,56 @@
+import { useState } from 'react';
 import { config } from '../config';
+import { FAQModal } from './FAQModal';
+import { PrivacyPolicyModal } from './PrivacyPolicyModal';
+import { TermsConditionsModal } from './TermsConditionsModal';
 
 export const Footer = () => {
+  const [isFAQOpen, setIsFAQOpen] = useState(false);
+  const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
+  const [isTermsOpen, setIsTermsOpen] = useState(false);
+
+  const scrollToProducts = (category?: string) => {
+    try {
+      const element = document.getElementById('productos');
+      if (element && element.offsetTop !== undefined) {
+        window.scrollTo({
+          top: element.offsetTop - 120,
+          behavior: 'smooth'
+        });
+        
+        // Simular filtro por categoría después del scroll
+        if (category) {
+          setTimeout(() => {
+            // Mapear "Accesorios" a múltiples categorías
+            const event = new CustomEvent('filterProducts', { detail: category });
+            window.dispatchEvent(event);
+          }, 500);
+        }
+      }
+    } catch (error) {
+      console.error('Error scrolling to products:', error);
+    }
+  };
+
+  const scrollToAbout = () => {
+    try {
+      const element = document.getElementById('inicio');
+      if (element && element.offsetTop !== undefined) {
+        window.scrollTo({
+          top: element.offsetTop - 120,
+          behavior: 'smooth'
+        });
+      }
+    } catch (error) {
+      console.error('Error scrolling to about:', error);
+    }
+  };
+
+  const openWhatsApp = (message: string) => {
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappUrl = `https://wa.me/${config.whatsappNumber.replace('+', '')}?text=${encodedMessage}`;
+    window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+  };
   return (
     <footer className="bg-dark-900 border-t border-dark-700">
       <div className="container mx-auto px-4 py-12">
@@ -42,11 +92,46 @@ export const Footer = () => {
           <div>
             <h4 className="text-lg font-semibold text-gray-100 mb-4">Servicios</h4>
             <ul className="space-y-2 text-sm">
-              <li><a href="#" className="text-gray-400 hover:text-primary-400 transition-colors">Fertilizantes</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-primary-400 transition-colors">Sustratos</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-primary-400 transition-colors">Accesorios</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-primary-400 transition-colors">Asesoramiento</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-primary-400 transition-colors">Envíos</a></li>
+              <li>
+                <button 
+                  onClick={() => scrollToProducts('Fertilizantes')}
+                  className="text-gray-400 hover:text-primary-400 transition-colors text-left"
+                >
+                  Fertilizantes
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => scrollToProducts('Sustratos')}
+                  className="text-gray-400 hover:text-primary-400 transition-colors text-left"
+                >
+                  Sustratos
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => scrollToProducts('Accesorios')}
+                  className="text-gray-400 hover:text-primary-400 transition-colors text-left"
+                >
+                  Accesorios
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => openWhatsApp('Hola, quisiera pedir asesoramiento')}
+                  className="text-gray-400 hover:text-primary-400 transition-colors text-left"
+                >
+                  Asesoramiento
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => openWhatsApp('Hola, quería consultar sobre envíos y costos')}
+                  className="text-gray-400 hover:text-primary-400 transition-colors text-left"
+                >
+                  Envíos
+                </button>
+              </li>
             </ul>
           </div>
 
@@ -54,10 +139,22 @@ export const Footer = () => {
           <div>
             <h4 className="text-lg font-semibold text-gray-100 mb-4">Empresa</h4>
             <ul className="space-y-2 text-sm">
-              <li><a href="#quienes-somos" className="text-gray-400 hover:text-primary-400 transition-colors">Quiénes Somos</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-primary-400 transition-colors">Blog</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-primary-400 transition-colors">Noticias</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-primary-400 transition-colors">Preguntas Frecuentes</a></li>
+              <li>
+                <button 
+                  onClick={scrollToAbout}
+                  className="text-gray-400 hover:text-primary-400 transition-colors text-left"
+                >
+                  Quiénes Somos
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => setIsFAQOpen(true)}
+                  className="text-gray-400 hover:text-primary-400 transition-colors text-left"
+                >
+                  Preguntas Frecuentes
+                </button>
+              </li>
             </ul>
           </div>
 
@@ -93,16 +190,26 @@ export const Footer = () => {
               © {new Date().getFullYear()} {config.businessName}. Todos los derechos reservados.
             </p>
             <div className="flex space-x-6 text-sm">
-              <a href="#" className="text-gray-400 hover:text-primary-400 transition-colors">
+              <button 
+                onClick={() => setIsPrivacyOpen(true)}
+                className="text-gray-400 hover:text-primary-400 transition-colors"
+              >
                 Política de Privacidad
-              </a>
-              <a href="#" className="text-gray-400 hover:text-primary-400 transition-colors">
+              </button>
+              <button 
+                onClick={() => setIsTermsOpen(true)}
+                className="text-gray-400 hover:text-primary-400 transition-colors"
+              >
                 Términos y Condiciones
-              </a>
+              </button>
             </div>
           </div>
         </div>
       </div>
+      
+      <FAQModal isOpen={isFAQOpen} onClose={() => setIsFAQOpen(false)} />
+      <PrivacyPolicyModal isOpen={isPrivacyOpen} onClose={() => setIsPrivacyOpen(false)} />
+      <TermsConditionsModal isOpen={isTermsOpen} onClose={() => setIsTermsOpen(false)} />
     </footer>
   );
 };

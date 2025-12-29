@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { products, Product } from '../data/products';
 import { ProductCard } from './ProductCard';
 import { ProductFilter } from './ProductFilter';
@@ -16,14 +16,37 @@ export const Products = ({ onAddToCart }: ProductsProps) => {
 
   const filteredProducts = useMemo(() => {
     if (!selectedCategory) return products;
+    
+    // Manejar categoría especial "Accesorios"
+    if (selectedCategory === 'Accesorios') {
+      return products.filter(product => 
+        ['Sedas', 'Bandejas', 'Bongs', 'Macetas'].includes(product.category)
+      );
+    }
+    
     return products.filter(product => product.category === selectedCategory);
   }, [selectedCategory]);
+
+  // Escuchar eventos de filtrado desde el footer
+  useEffect(() => {
+    const handleFilterProducts = (event: CustomEvent) => {
+      const category = event.detail;
+      setSelectedCategory(category);
+    };
+
+    window.addEventListener('filterProducts', handleFilterProducts as EventListener);
+    
+    return () => {
+      window.removeEventListener('filterProducts', handleFilterProducts as EventListener);
+    };
+  }, []);
 
   return (
     <section id="productos" className="min-h-screen flex flex-col justify-center px-4 py-20">
       <div className="container mx-auto">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 text-primary-400 font-display">
-          Nuestros Productos
+          {selectedCategory === 'Accesorios' ? 'Accesorios' : 
+           selectedCategory ? selectedCategory : 'Nuestros Productos'}
         </h2>
         
         <p className="text-center text-gray-300 mb-12 text-lg">
