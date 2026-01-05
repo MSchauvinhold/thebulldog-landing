@@ -20,8 +20,8 @@ export const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
   };
 
   return (
-    <div className="card p-6">
-      <div className="aspect-square mb-4 bg-dark-700 rounded-lg overflow-hidden">
+    <div className="card p-3 md:p-6 h-full flex flex-col">
+      <div className="aspect-square mb-2 md:mb-4 bg-dark-700 rounded-lg overflow-hidden">
         <img 
           src={product.image} 
           alt={product.name}
@@ -32,24 +32,24 @@ export const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
         />
       </div>
       
-      <h3 className="text-lg font-semibold text-gray-100 mb-2">
+      <h3 className="text-sm md:text-lg font-semibold text-gray-100 mb-1 md:mb-2 leading-tight">
         {product.name}
       </h3>
       
-      <p className="text-gray-400 text-sm mb-4">
+      <p className="text-gray-400 text-xs md:text-sm mb-2 md:mb-4 line-clamp-2 flex-grow">
         {product.description}
       </p>
       
-      <div className="flex items-center justify-between">
-        <span className="text-2xl font-bold text-primary-400">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mt-auto">
+        <span className="text-lg md:text-2xl font-bold text-primary-400">
           ${product.price.toLocaleString('es-AR')}
         </span>
         
         <button 
           onClick={handleAddToCart}
-          className="btn-primary text-sm px-4 py-2"
+          className="btn-primary text-xs md:text-sm px-3 md:px-4 py-2 w-full md:w-auto"
         >
-          Agregar al carrito
+          Agregar
         </button>
       </div>
     </div>

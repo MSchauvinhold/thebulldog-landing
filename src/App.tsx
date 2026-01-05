@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Banner } from './components/Banner';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { InfoSection } from './components/InfoSection';
@@ -22,7 +21,6 @@ function App() {
 
   return (
     <div className="min-h-screen bg-dark-900 text-gray-100">
-      <Banner />
       <Header />
       
       <main>
