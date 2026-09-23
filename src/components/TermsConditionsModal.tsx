@@ -111,7 +111,7 @@ export const TermsConditionsModal = ({ isOpen, onClose }: TermsConditionsModalPr
               <div className="space-y-2">
                 <p><strong>WhatsApp:</strong> {config.whatsappNumber}</p>
                 <p><strong>Email:</strong> info@thebulldoggrowshop.com</p>
-                <p><strong>Dirección:</strong> Madariaga 1111, Paso de los Libres, Corrientes</p>
+                <p><strong>Dirección:</strong>Paso de los Libres, Corrientes</p>
               </div>
             </section>
 

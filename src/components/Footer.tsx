@@ -162,7 +162,7 @@ export const Footer = () => {
           <div>
             <h4 className="text-lg font-semibold text-gray-100 mb-4">Contacto</h4>
             <div className="space-y-2 text-sm text-gray-400">
-              <p>Madariaga 1111</p>
+              <p></p>
               <p>Paso de los Libres, Corrientes, Argentina</p>
               <p className="mt-3">
                 <a href={`tel:${config.whatsappNumber}`} className="hover:text-primary-400 transition-colors">

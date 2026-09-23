@@ -81,7 +81,7 @@ export const Checkout = ({ items, total, onClose }: CheckoutProps) => {
     ).join('\n');
 
     const deliveryInfo = deliveryType === 'pickup' 
-      ? '\n\nRetiro en local:\nMadariaga 1111, Paso de los Libres, Corrientes\nHorarios: Lun-Vie 10:30-12:30 / 16:00-20:00, Sáb 15:00-19:00'
+      ? '\n\nRetiro en local:\nPaso de los Libres, Corrientes\nHorarios: Lun-Vie 10:30-12:30 / 16:00-20:00, Sáb 15:00-19:00'
       : `\n\nEnvío a domicilio:\nDirección: ${shippingData.address}\nCiudad: ${shippingData.city}\nProvincia: ${shippingData.province}\nCódigo Postal: ${shippingData.postalCode}${shippingData.reference ? `\nReferencia: ${shippingData.reference}` : ''}`;
 
     const message = `${config.baseWhatsappMessage}
@@ -171,7 +171,7 @@ Total: $${total.toLocaleString('es-AR')}`;
               {deliveryType === 'pickup' && (
                 <div className="mt-3 p-3 bg-dark-700 rounded-lg">
                   <p className="text-sm text-gray-300">
-                    <strong>Dirección:</strong> Madariaga 1111, Paso de los Libres, Corrientes
+                    <strong>Dirección:</strong>Paso de los Libres, Corrientes
                   </p>
                   <p className="text-sm text-gray-300 mt-1">
                     <strong>Horarios:</strong> Lun-Vie 10:30-12:30 / 16:00-20:00, Sáb 15:00-19:00
